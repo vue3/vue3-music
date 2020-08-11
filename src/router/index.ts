@@ -16,6 +16,12 @@ const routes: Array<any> = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
+  {
+    path: "/github",
+    name: "Github",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Github.vue"),
+  },
 ];
 
 const router = createRouter({

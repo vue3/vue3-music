@@ -1,20 +1,20 @@
 <template>
   <div class="home">
     <GithubCorner />
-    <HelloWorld msg="Welcome to Your Vue-next.js App" />
+    <AudioPlayer />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
 import GithubCorner from "@/components/GithubCorner.vue";
+import AudioPlayer from "@/components/AudioPlayer.vue";
 
 export default {
   name: "Home",
   components: {
-    HelloWorld,
     GithubCorner,
+    AudioPlayer
   },
 };
 </script>

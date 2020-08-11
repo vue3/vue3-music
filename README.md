@@ -1,2 +1,5 @@
-# vue3-music
-vue3 music webapp
+# vue3 music
+
+key: vue3、music、webapp
+
+es6 音频库
