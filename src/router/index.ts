@@ -22,6 +22,12 @@ const routes: Array<any> = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Github.vue"),
   },
+  {
+    path: "/music",
+    name: "Music",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Music.vue"),
+  },
 ];
 
 const router = createRouter({
