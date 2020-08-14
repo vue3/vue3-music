@@ -32,60 +32,26 @@ import mp3 from "@/music-files/一曲相思-阿悠悠.mp3";
 import bg from "@/music-files/WX20200812-203119.png";
 import Vudio from "@/utils/vudio";
 
-var colors = [
-  [
-    [0, "#f00"],
-    [0.3, "#f00"],
-    [0.3, "#f90"],
-    [0.7, "#f90"],
-    [0.7, "#ff0"],
-    [1, "#ff0"],
-  ],
-  "#ff0",
-  ["#06f", "#09f", " #0Cf", "#0ff"],
-  ["#fb6d6b", "#c10056", " #a50053", "#51074b"],
-  [
-    [0, "#ff422d"],
-    [0.5, "#ff422d"],
-    [0.5, "#6072ff"],
-    [1, "#6072ff"],
-  ],
-];
-var types = ["waveform", "circlebar", "lighting", "circlewave"];
-var prettify = false;
-
 export default defineComponent({
   name: "About",
   components: {
     GithubCorner,
   },
   setup() {
-    const wrapper = ref(null);
+    const audio = ref(null);
     const canvas = ref(null);
-    let vudio;
     onMounted(() => {
-      vudio = new Vudio(wrapper.value, canvas.value, {
-        effect: "circlewave",
-        accuracy: 128,
-        width: 800,
-        height: 800,
+      new Vudio(audio.value, canvas.value, {
         circlewave: {
-          maxHeight: 100,
-          circleRadius: 200,
-          fadeSide: true,
-          shadowBlur: 4,
-          shadowColor: "rgba(244,244,244,.5)",
           coverImg: bg,
         },
-      });
-      vudio.dance();
+      }).dance();
     });
     function play() {
-      wrapper.value.play();
-      vudio.dance();
+      audio.value.play();
     }
     return {
-      audioRef: wrapper,
+      audioRef: audio,
       canvasRef: canvas,
       mp3url: mp3,
       play: play,

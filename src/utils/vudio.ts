@@ -5,20 +5,18 @@ import _, { merge } from "lodash";
 const __default_option = {
   effect: "circlewave",
   accuracy: 128,
-  width: 256,
-  height: 100,
+  width: 800,
+  height: 800,
   circlewave: {
-    maxHeight: 20,
+    maxHeight: 100,
     minHeight: -5,
     spacing: 1,
     color: ["#fb6d6b", "#c10056", " #a50053", "#51074b"],
-    shadowBlur: 2,
-    shadowColor: "#caa",
-    fadeSide: true,
-    prettify: true,
+    shadowBlur: 4,
+    shadowColor: "rgba(244,244,244,.5)",
     particle: true,
     maxParticle: 100,
-    circleRadius: 128,
+    circleRadius: 200,
     showProgress: true,
   },
 };
@@ -133,29 +131,13 @@ class Vudio {
     this.analyser.connect(audioContext.destination);
   }
 
-  __rebuildData(freqByteData: any, horizontalAlign: any) {
-    let __freqByteData;
-
-    if (horizontalAlign === "center") {
-      __freqByteData = [].concat(
-        (Array.from(freqByteData) as any)
-          .reverse()
-          .splice(this.option.accuracy / 2, this.option.accuracy / 2),
-        (Array.from(freqByteData) as any).splice(0, this.option.accuracy / 2)
-      );
-    } else if (horizontalAlign === "left") {
-      __freqByteData = freqByteData;
-    } else if (horizontalAlign === "right") {
-      __freqByteData = Array.from(freqByteData).reverse();
-    } else {
-      __freqByteData = [].concat(
-        (Array.from(freqByteData) as any)
-          .reverse()
-          .splice(this.option.accuracy / 2, this.option.accuracy / 2),
-        (Array.from(freqByteData) as any).splice(0, this.option.accuracy / 2)
-      );
-    }
-
+  __rebuildData(freqByteData: any) {
+    const __freqByteData = [].concat(
+      (Array.from(freqByteData) as any)
+        .reverse()
+        .splice(this.option.accuracy / 2, this.option.accuracy / 2),
+      (Array.from(freqByteData) as any).splice(0, this.option.accuracy / 2)
+    );
     return __freqByteData;
   }
 
@@ -179,16 +161,10 @@ class Vudio {
   __animate() {
     if (this.stat === 1) {
       this.analyser.getByteFrequencyData(this.freqByteData);
-      typeof this.__effects()[this.option.effect] === "function" &&
-        this.__effects()[this.option.effect](this.freqByteData);
+      const effect = this.__effects()[this.option.effect];
+      typeof effect === "function" && effect(this.freqByteData);
       requestAnimationFrame(this.__animate.bind(this));
     }
-  }
-
-  __testFrame() {
-    this.analyser.getByteFrequencyData(this.freqByteData);
-    typeof this.__effects()[this.option.effect] === "function" &&
-      this.__effects()[this.option.effect](this.freqByteData);
   }
 
   // effect functions
@@ -198,12 +174,7 @@ class Vudio {
     return {
       circlewave: function (freqByteData: any) {
         const __circlewaveOption = __that.option.circlewave;
-        let __fadeSide = __circlewaveOption.fadeSide;
-        let __prettify = __circlewaveOption.prettify;
-        const __freqByteData = __that.__rebuildData(
-          freqByteData,
-          __circlewaveOption.horizontalAlign
-        );
+        const __freqByteData = __that.__rebuildData(freqByteData);
         const __angle = (Math.PI * 2) / __freqByteData.length;
         let __maxHeight, __width, __height, __left, __linearGradient: any;
         const circleRadius = __circlewaveOption.circleRadius;
@@ -214,11 +185,6 @@ class Vudio {
           __that.audioSrc.currentTime / __that.audioSrc.duration;
         let __isStart = true;
         const __color = __circlewaveOption.color;
-
-        if (__circlewaveOption.horizontalAlign !== "center") {
-          __fadeSide = false;
-          __prettify = false;
-        }
 
         // clear canvas
         __that.context2d.clearRect(0, 0, __that.width, __that.height);
@@ -269,23 +235,7 @@ class Vudio {
           __circlewaveOption.spacing !== 1 &&
             (__left += __circlewaveOption.spacing / 2);
 
-          if (__prettify) {
-            if (index <= __that.option.accuracy / 2) {
-              __maxHeight =
-                (1 -
-                  (__that.option.accuracy / 2 - 1 - index) /
-                    (__that.option.accuracy / 2)) *
-                __circlewaveOption.maxHeight;
-            } else {
-              __maxHeight =
-                (1 -
-                  (index - __that.option.accuracy / 2) /
-                    (__that.option.accuracy / 2)) *
-                __circlewaveOption.maxHeight;
-            }
-          } else {
-            __maxHeight = __circlewaveOption.maxHeight;
-          }
+          __maxHeight = __circlewaveOption.maxHeight;
 
           __height = (value / 256) * __maxHeight;
           __height =
@@ -319,21 +269,7 @@ class Vudio {
             __that.context2d.fillStyle = __color;
           }
 
-          if (__fadeSide) {
-            if (index <= __that.option.accuracy / 2) {
-              __that.context2d.globalAlpha =
-                1 -
-                (__that.option.accuracy / 2 - 1 - index) /
-                  (__that.option.accuracy / 2);
-            } else {
-              __that.context2d.globalAlpha =
-                1 -
-                (index - __that.option.accuracy / 2) /
-                  (__that.option.accuracy / 2);
-            }
-          } else {
-            __that.context2d.globalAlpha = 1;
-          }
+          __that.context2d.globalAlpha = 1;
 
           const curAngle = __angle * index;
           const __x = Math.sin(curAngle) * (circleRadius + __height);
@@ -448,29 +384,5 @@ class Vudio {
     __that.context2d.stroke();
   }
 }
-
-// // private functions
-// function __mergeOption(a: any, b: any) {
-//   const __result: any = {};
-
-//   Array.prototype.forEach.call(arguments, function (argument) {
-//     let __prop;
-//     // let __value;
-
-//     for (__prop in argument) {
-//       if (Object.prototype.hasOwnProperty.call(argument, __prop)) {
-//         if (
-//           Object.prototype.toString.call(argument[__prop]) === "[object Object]"
-//         ) {
-//           __result[__prop] = __mergeOption(__result[__prop], argument[__prop]);
-//         } else {
-//           __result[__prop] = argument[__prop];
-//         }
-//       }
-//     }
-//   });
-
-//   return __result;
-// }
 
 export default Vudio;
