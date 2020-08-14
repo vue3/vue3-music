@@ -13,6 +13,9 @@
       <div>
         <router-link to="/music">(🌽 ) => Music</router-link>
       </div>
+      <div>
+        <router-link to="/music-cool">(🌽 ) => Cool</router-link>
+      </div>
     </div>
     <div id="content">
       <router-view />

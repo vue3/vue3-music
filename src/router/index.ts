@@ -28,6 +28,12 @@ const routes: Array<any> = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Music.vue"),
   },
+  {
+    path: "/music-cool",
+    name: "Music",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/MusicCool.vue"),
+  },
 ];
 
 const router = createRouter({

@@ -241,14 +241,15 @@ export default {
   width: 100%;
   background-color: #fff;
   .row {
-     justify-content: center;
-     height: 50px;
+    justify-content: center;
+    height: 50px;
   }
   p {
-    display: inline-block;    top: -50px;
-        color: #090909;
+    display: inline-block;
+    top: -50px;
+    color: #090909;
     position: relative;
-      text-transform: uppercase;
+    text-transform: uppercase;
   }
 }
 
