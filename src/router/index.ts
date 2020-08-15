@@ -30,7 +30,7 @@ const routes: Array<any> = [
   },
   {
     path: "/music-cool",
-    name: "Music",
+    name: "Music-Cool",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/MusicCool.vue"),
   },
