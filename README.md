@@ -50,6 +50,12 @@ threejs 三大组件（场景-scene，相机-camera，渲染器-renderer）
 
 gsap => TweenMax  
 
+
+howler.js_现代浏览器的js音频库   
+地址: https://howlerjs.com    
+GitHub: https://github.com/goldfire/howler.js  
+现代浏览器的js音频库howler.js 是一个针对现代浏览器的音频库。
+
 ## 参考
 
 - [手把手教你用 Js 实现音频可视化](https://www.jianshu.com/p/7c4f58ee8972)
